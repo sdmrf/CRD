@@ -64,6 +64,7 @@ const IdentifyCriminal = () => {
   //Close Webcam
   const closeWebcam = () => {
     setIsVideoOn(false);
+    setCriminalId("");
     let video = videoRef.current;
     video.srcObject.getTracks()[0].stop();
   };
