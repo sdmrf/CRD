@@ -94,7 +94,7 @@ const IdentifyCriminal = () => {
         labeledFaceDescriptors,
         displaySize,
         criminalId,
-        setCriminalId,
+        setCriminalId
       );
     }, 100);
   };
@@ -111,14 +111,16 @@ const IdentifyCriminal = () => {
         <Spinner />
       )}
       {isLFDLoaded && isVideoOn && (
-        <div className="VideoContainer">
-          <video
-            ref={videoRef}
-            width={vidWidth}
-            height={vidHeight}
-            onPlay={handleFaceRecognition}
-          />
-          <canvas ref={canvasRef} />
+        <div className="Video">
+          <div className="VideoContainer">
+            <video
+              ref={videoRef}
+              width={vidWidth}
+              height={vidHeight}
+              onPlay={handleFaceRecognition}
+            />
+            <canvas ref={canvasRef} />
+          </div>
           {criminalId && (
             <div className="CriminalIdModal">
               <h1>Criminal Is Identified</h1>
