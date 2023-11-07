@@ -1,6 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import * as faceapi from "face-api.js";
-import { loadModels, getContract, getCriminalIds, generateLabeledFaceDescriptors, detectAndRecognizeFaces } from "../../ApiFeature";
+import Spinner from "./Spinner/Spinner";
+import {
+  loadModels,
+  generateLabeledFaceDescriptors,
+  detectAndRecognizeFaces,
+} from "../../ApiFeature";
 import "./IdentifyCriminal.scss";
 
 const IdentifyCriminal = () => {
@@ -8,6 +12,7 @@ const IdentifyCriminal = () => {
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [labeledFaceDescriptors, setLabeledFaceDescriptors] = useState([]);
+  const [isLFDLoaded, setIsLFDLoaded] = useState(false);
 
   // Refs
   const videoRef = useRef();
@@ -30,15 +35,17 @@ const IdentifyCriminal = () => {
     generateLabeledFaceDescriptors()
       .then((LFD) => {
         setLabeledFaceDescriptors(LFD);
+        if (LFD.length > 0) setIsLFDLoaded(true);
       })
-      .catch((error) => console.error("Error generating labeled face descriptors:", error));
+      .catch((error) =>
+        console.error("Error generating labeled face descriptors:", error)
+      );
   }, []);
 
   console.log(labeledFaceDescriptors);
 
   //Start Webcam
   const startWebcam = () => {
-    setIsVideoOn(true);
     navigator.mediaDevices
       .getUserMedia({ video: { width: 300 } })
       .then((stream) => {
@@ -46,6 +53,7 @@ const IdentifyCriminal = () => {
         video.srcObject = stream;
         video.play();
       })
+      .then(() => setIsVideoOn(true))
       .catch((err) => {
         console.error("error:", err);
       });
@@ -60,7 +68,7 @@ const IdentifyCriminal = () => {
 
   // Face Recognition
   const handleFaceRecognition = async () => {
-    if(!isModelLoaded) return console.error("Models not loaded ❌");
+    if (!isModelLoaded) return console.error("Models not loaded ❌");
     console.log("Face Recognition Started ✅");
 
     // Getting the video element
@@ -72,9 +80,17 @@ const IdentifyCriminal = () => {
     canvas.height = vidHeight;
 
     // Detecting and recognizing faces in a video
-    setInterval(detectAndRecognizeFaces(video, canvas, labeledFaceDescriptors, displaySize ), 100);
+    setInterval(
+      async () =>
+        await detectAndRecognizeFaces(
+          video,
+          canvas,
+          labeledFaceDescriptors,
+          displaySize
+        ),
+      100
+    );
   };
-
 
   return (
     <div className="IdentifyCriminal">
@@ -83,17 +99,20 @@ const IdentifyCriminal = () => {
       ) : (
         <button onClick={startWebcam}>Open Webcam</button>
       )}
-      {isVideoOn && (
-        <div className="VideoContainer">
-          <video
-            ref={videoRef}
-            width={vidWidth}
-            height={vidHeight}
-            onPlay={handleFaceRecognition}
-          />
-          <canvas ref={canvasRef} />
-        </div>
-      )}
+      {isVideoOn &&
+        (isLFDLoaded ? (
+          <div className="VideoContainer">
+            <video
+              ref={videoRef}
+              width={vidWidth}
+              height={vidHeight}
+              onPlay={handleFaceRecognition}
+            />
+            <canvas ref={canvasRef} />
+          </div>
+        ) : (
+          <Spinner />
+        ))}
     </div>
   );
 };

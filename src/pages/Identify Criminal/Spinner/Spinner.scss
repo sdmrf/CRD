@@ -1,0 +1,219 @@
+$offset: 30px;
+$duration: 2.4s;
+$delay: 0.2s;
+$timing-function: ease-in-out;
+$in-duration: 0.4s;
+$in-delay: 0.1s;
+$in-timing-function: ease-out;
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loadingspinner {
+  --square: 26px;
+  width: calc(3 * $offset + var(--square));
+  height: calc(2 * $offset + var(--square));
+  padding: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  position: relative;
+
+  div {
+    display: inline-block;
+    background: darkorange;
+    border: none;
+    border-radius: 2px;
+    width: var(--square);
+    height: var(--square);
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    font-size: 6pt;
+    color: black;
+  }
+
+  #square1 {
+    left: calc(0 * $offset);
+    top: calc(0 * $offset);
+    animation: square1 $duration $delay $timing-function infinite, squarefadein $in-duration calc(1 * $in-delay) $in-timing-function both;
+  }
+
+  #square2 {
+    left: calc(0 * $offset);
+    top: calc(1 * $offset);
+    animation: square2 $duration $delay $timing-function infinite, squarefadein $in-duration calc(1 * $in-delay) $in-timing-function both;
+  }
+
+  #square3 {
+    left: calc(1 * $offset);
+    top: calc(1 * $offset);
+    animation: square3 $duration $delay $timing-function infinite, squarefadein $in-duration calc(2 * $in-delay) $in-timing-function both;
+  }
+
+  #square4 {
+    left: calc(2 * $offset);
+    top: calc(1 * $offset);
+    animation: square4 $duration $delay $timing-function infinite, squarefadein $in-duration calc(3 * $in-delay) $in-timing-function both;
+  }
+
+  #square5 {
+    left: calc(3 * $offset);
+    top: calc(1 * $offset);
+    animation: square5 $duration $delay $timing-function infinite, squarefadein $in-duration calc(4 * $in-delay) $in-timing-function both;
+  }
+}
+
+@keyframes square1 {
+  0% {
+    left: calc(0 * $offset);
+    top: calc(0 * $offset);
+  }
+  8.333% {
+    left: calc(0 * $offset);
+    top: calc(1 * $offset);
+  }
+  100% {
+    left: calc(0 * $offset);
+    top: calc(1 * $offset);
+  }
+}
+
+@keyframes square2 {
+  0% {
+    left: calc(0 * $offset);
+    top: calc(1 * $offset);
+  }
+  8.333% {
+    left: calc(0 * $offset);
+    top: calc(2 * $offset);
+  }
+  16.67% {
+    left: calc(1 * $offset);
+    top: calc(2 * $offset);
+  }
+  25.00% {
+    left: calc(1 * $offset);
+    top: calc(1 * $offset);
+  }
+  83.33% {
+    left: calc(1 * $offset);
+    top: calc(1 * $offset);
+  }
+  91.67% {
+    left: calc(1 * $offset);
+    top: calc(0 * $offset);
+  }
+  100% {
+    left: calc(0 * $offset);
+    top: calc(0 * $offset);
+  }
+}
+
+@keyframes square3 {
+  0%, 100% {
+    left: calc(1 * $offset);
+    top: calc(1 * $offset);
+  }
+  16.67% {
+    left: calc(1 * $offset);
+    top: calc(1 * $offset);
+  }
+  25.00% {
+    left: calc(1 * $offset);
+    top: calc(0 * $offset);
+  }
+  33.33% {
+    left: calc(2 * $offset);
+    top: calc(0 * $offset);
+  }
+  41.67% {
+    left: calc(2 * $offset);
+    top: calc(1 * $offset);
+  }
+  66.67% {
+    left: calc(2 * $offset);
+    top: calc(1 * $offset);
+  }
+  75.00% {
+    left: calc(2 * $offset);
+    top: calc(2 * $offset);
+  }
+  83.33% {
+    left: calc(1 * $offset);
+    top: calc(2 * $offset);
+  }
+  91.67% {
+    left: calc(1 * $offset);
+    top: calc(1 * $offset);
+  }
+}
+
+@keyframes square4 {
+  0% {
+    left: calc(2 * $offset);
+    top: calc(1 * $offset);
+  }
+  33.33% {
+    left: calc(2 * $offset);
+    top: calc(1 * $offset);
+  }
+  41.67% {
+    left: calc(2 * $offset);
+    top: calc(2 * $offset);
+  }
+  50.00% {
+    left: calc(3 * $offset);
+    top: calc(2 * $offset);
+  }
+  58.33% {
+    left: calc(3 * $offset);
+    top: calc(1 * $offset);
+  }
+  100% {
+    left: calc(3 * $offset);
+    top: calc(1 * $offset);
+  }
+}
+
+@keyframes square5 {
+  0% {
+    left: calc(3 * $offset);
+    top: calc(1 * $offset);
+  }
+  50.00% {
+    left: calc(3 * $offset);
+    top: calc(1 * $offset);
+  }
+  58.33% {
+    left: calc(3 * $offset);
+    top: calc(0 * $offset);
+  }
+  66.67% {
+    left: calc(2 * $offset);
+    top: calc(0 * $offset);
+  }
+  75.00% {
+    left: calc(2 * $offset);
+    top: calc(1 * $offset);
+  }
+  100% {
+    left: calc(2 * $offset);
+    top: calc(1 * $offset);
+  }
+}
+
+@keyframes squarefadein {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.0;
+  }
+  100% {
+    transform: scale(1.0);
+    opacity: 1.0;
+  }
+}
