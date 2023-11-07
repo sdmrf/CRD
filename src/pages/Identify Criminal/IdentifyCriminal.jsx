@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Spinner from "./Spinner/Spinner";
 import {
   loadModels,
@@ -13,6 +14,7 @@ const IdentifyCriminal = () => {
   const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [labeledFaceDescriptors, setLabeledFaceDescriptors] = useState([]);
   const [isLFDLoaded, setIsLFDLoaded] = useState(false);
+  const [criminalId, setCriminalId] = useState("");
 
   // Refs
   const videoRef = useRef();
@@ -66,6 +68,11 @@ const IdentifyCriminal = () => {
     video.srcObject.getTracks()[0].stop();
   };
 
+  // Copy text to clipboard
+  const copyTextToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+  };
+
   // Face Recognition
   const handleFaceRecognition = async () => {
     if (!isModelLoaded) return console.error("Models not loaded ❌");
@@ -80,16 +87,16 @@ const IdentifyCriminal = () => {
     canvas.height = vidHeight;
 
     // Detecting and recognizing faces in a video
-    setInterval(
-      async () =>
-        await detectAndRecognizeFaces(
-          video,
-          canvas,
-          labeledFaceDescriptors,
-          displaySize
-        ),
-      100
-    );
+    setInterval(async () => {
+      await detectAndRecognizeFaces(
+        video,
+        canvas,
+        labeledFaceDescriptors,
+        displaySize,
+        criminalId,
+        setCriminalId,
+      );
+    }, 100);
   };
 
   return (
@@ -112,6 +119,18 @@ const IdentifyCriminal = () => {
             onPlay={handleFaceRecognition}
           />
           <canvas ref={canvasRef} />
+          {criminalId && (
+            <div className="CriminalIdModal">
+              <h1>Criminal Is Identified</h1>
+              <div
+                className="CriminalId"
+                onClick={copyTextToClipboard(criminalId)}
+              >
+                {criminalId}
+                <ContentCopyIcon />
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

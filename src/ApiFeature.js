@@ -142,7 +142,7 @@ const generateLabeledFaceDescriptors = async () => {
 };
 
 // Detecting and recognizing faces in a video
-const detectAndRecognizeFaces = async (video, canvas, labeledFaceDescriptors, displaySize) => {
+const detectAndRecognizeFaces = async (video, canvas, labeledFaceDescriptors, displaySize,criminalId, setCriminalId) => {
   const detections = await faceapi
     .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
     .withFaceLandmarks()
@@ -166,6 +166,12 @@ const detectAndRecognizeFaces = async (video, canvas, labeledFaceDescriptors, di
     });
     drawBox.draw(canvas, displaySize);
   });
+
+  if(!results[0]) return console.log("No face detected ❌");
+  const cid = results[0].toString().split(" ")[0];
+  if(isNaN(cid)) return console.log("No face detected ❌");
+  setCriminalId(cid);
+
 };
 
 export {
