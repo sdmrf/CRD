@@ -114,7 +114,6 @@ const generateLabeledFaceDescriptors = async () => {
           const img = await faceapi.fetchImage(
             `https://ipfs.io/ipfs/${mugshots[i]}`
           );
-          console.log(img);
           // Detecting the face
           const detections = await faceapi
             .detectSingleFace(img, new faceapi.TinyFaceDetectorOptions())

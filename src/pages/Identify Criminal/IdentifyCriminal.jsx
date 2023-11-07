@@ -46,6 +46,7 @@ const IdentifyCriminal = () => {
 
   //Start Webcam
   const startWebcam = () => {
+    setIsVideoOn(true);
     navigator.mediaDevices
       .getUserMedia({ video: { width: 300 } })
       .then((stream) => {
@@ -53,7 +54,6 @@ const IdentifyCriminal = () => {
         video.srcObject = stream;
         video.play();
       })
-      .then(() => setIsVideoOn(true))
       .catch((err) => {
         console.error("error:", err);
       });
@@ -94,25 +94,26 @@ const IdentifyCriminal = () => {
 
   return (
     <div className="IdentifyCriminal">
-      {isVideoOn ? (
-        <button onClick={closeWebcam}>Close Webcam</button>
-      ) : (
-        <button onClick={startWebcam}>Open Webcam</button>
-      )}
-      {isVideoOn &&
-        (isLFDLoaded ? (
-          <div className="VideoContainer">
-            <video
-              ref={videoRef}
-              width={vidWidth}
-              height={vidHeight}
-              onPlay={handleFaceRecognition}
-            />
-            <canvas ref={canvasRef} />
-          </div>
+      {isLFDLoaded ? (
+        isVideoOn ? (
+          <button onClick={closeWebcam}>Close Webcam</button>
         ) : (
-          <Spinner />
-        ))}
+          <button onClick={startWebcam}>Open Webcam</button>
+        )
+      ) : (
+        <Spinner />
+      )}
+      {isLFDLoaded && isVideoOn && (
+        <div className="VideoContainer">
+          <video
+            ref={videoRef}
+            width={vidWidth}
+            height={vidHeight}
+            onPlay={handleFaceRecognition}
+          />
+          <canvas ref={canvasRef} />
+        </div>
+      )}
     </div>
   );
 };
